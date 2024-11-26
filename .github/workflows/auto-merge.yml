@@ -6,6 +6,9 @@ on:
       - submitted           # 리뷰가 제출되었을 때
       - review_requested    # 리뷰 요청이 발생했을 때
       - review_dismissed    # 기존 리뷰가 취소되었을 때
+  pull_request_review:
+    types:
+      - submitted
 
 jobs:
   auto-merge:
