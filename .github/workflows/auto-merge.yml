@@ -1,0 +1,50 @@
+name: Auto Merge Pull Requests
+
+on:
+  pull_request:             # pull_request 이벤트 발생 시 트리거
+    types:
+      - submitted           # 리뷰가 제출되었을 때
+      - review_requested    # 리뷰 요청이 발생했을 때
+      - review_dismissed    # 기존 리뷰가 취소되었을 때
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Required Approvals    # 리뷰 승인을 확인하는 단계
+        uses: actions/github-script@v6    # GitHub Script 액션을 사용
+        id: check_approvals
+        with:
+          script: |
+            const reviews = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+
+            const uniqueReviews = new Map();
+            reviews.data.forEach(review => {
+              uniqueReviews.set(review.user.login, review.state);
+            });
+
+            const approvals = Array.from(uniqueReviews.values()).filter(state => state === 'APPROVED').length;
+
+            if (approvals < 1) {
+              core.setFailed(`Not enough approvals. Required: 1, Found: ${approvals}`);
+            }
+
+      - name: Merge Pull Request           # PR을 병합하는 단계
+        if: success()                      # 이전 단계가 성공했을 때만 실행
+        uses: actions/github-script@v6     # GitHub Script 액션을 사용
+        with:
+          script: |
+            await github.rest.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              merge_method: 'merge',
+            });
