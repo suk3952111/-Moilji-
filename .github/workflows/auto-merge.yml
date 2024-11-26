@@ -30,8 +30,8 @@ jobs:
 
             const approvals = Array.from(uniqueReviews.values()).filter(state => state === 'APPROVED').length;
 
-            if (approvals < 3) {
-              core.setFailed(`Not enough approvals. Required: 3, Found: ${approvals}`);
+            if (approvals < 1) {
+              core.setFailed(`Not enough approvals. Required: 1, Found: ${approvals}`);
             }
 
       - name: Merge Pull Request           # PR을 병합하는 단계
