@@ -29,8 +29,7 @@
 }
 
 .react-calendar {
-  border: 0.0625rem solid #ccc;
-  border-radius: 0.5rem;
+  border: 0.15rem solid #ccc;
   width: 28rem;
   height: 25.5625rem;
   padding: 1.25rem;
