@@ -20,8 +20,8 @@ interface MeetingAvatarProps {
 export default function ImgCustomLoader({
   src,
   alt,
-  width,
-  height,
+  width = '100px',
+  height = '100px',
   className,
 }: MeetingAvatarProps) {
   return (
