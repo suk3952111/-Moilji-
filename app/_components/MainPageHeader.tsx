@@ -2,12 +2,15 @@
 
 import { useState } from 'react';
 import Calendar from 'react-calendar';
+import ImgCustomLoader from '../utils/ImgCustomLoader';
 import CircularProgress from './CirclueProgressBar';
 import './CustomCalendar.css';
-import MeetingAvatar from './MeetingAvatar';
 import { Button } from '@/components/ui/button';
+import avatarImg from '@/public/avatar.png';
+import heartImg from '@/public/heart.png';
+import moreAvatarImg from '@/public/more-avatar.png';
+import usersImg from '@/public/users.png';
 import { format } from 'date-fns';
-import 'swiper/css';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -18,6 +21,8 @@ export default function MainPageHeader() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   // 로그인 상태
   const [isLogin, setIsLogin] = useState(false);
+  // 오늘 날짜 할당
+  const today = new Date();
 
   // 로그인 상태 토글
   const loginStatusHandler = () => {
@@ -42,23 +47,53 @@ export default function MainPageHeader() {
                       독서 모임 테스트 {idx + 1}
                     </h3>
                     <p className='text-sm text-gray-600 mt-6'>12월 04일 시작</p>
-                    <div className='flex items-center gap-2 mt-20'>
-                      <div className='bg-gray-200 py-1 px-2 rounded-full'>
-                        🤦‍♂️
+                    <div className='flex flex-col items-start gap-2 mt-20'>
+                      <div className='flex flex-row gap-2 items-center'>
+                        <ImgCustomLoader
+                          src={usersImg}
+                          alt='user-img'
+                          width='0.9375rem'
+                          height='0.9375rem'
+                        />
+                        <span className='text-sm'>21명 / 50명</span>
                       </div>
-                      <span className='text-sm'>31 / 50 명</span>
-                      <div>
-                        <MeetingAvatar />
+
+                      <div className='flex flex-row'>
+                        {[1, 2, 3, 4, 5, 6].slice(0, 4).map((_, idx) => (
+                          <ImgCustomLoader
+                            key={idx}
+                            src={idx < 3 ? avatarImg : moreAvatarImg}
+                            alt='avatar-img'
+                            width='2.5rem'
+                            height='2.5rem'
+                            className='-mr-4'
+                          />
+                        ))}
                       </div>
                     </div>
-                    <div className='flex items-center justify-between mt-20 gap-6'>
+                    <div className='flex items-center justify-between mt-10 gap-6'>
                       <Button className='w-[12.5rem]'>함께 읽기</Button>
                       <button
                         onClick={() => setIsBookmarked(!isBookmarked)}
                         aria-label='Bookmark'
                         className='text-lg'
                       >
-                        {isBookmarked ? '★' : '☆'}
+                        {isBookmarked ? (
+                          <ImgCustomLoader
+                            src={heartImg}
+                            alt='heart-img'
+                            width='40'
+                            height='40'
+                          />
+                        ) : (
+                          <ImgCustomLoader
+                            src={heartImg}
+                            alt='heart-img'
+                            width='40'
+                            height='40'
+                            className='bg-blue-300'
+                          />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -117,6 +152,11 @@ export default function MainPageHeader() {
           prev2Label={null}
           next2Label={null}
           showNeighboringMonth={false}
+          tileClassName={({ date, view }) =>
+            view === 'month' && date.toDateString() === today.toDateString()
+              ? 'highlight-today'
+              : null
+          }
         />
       </div>
     </div>

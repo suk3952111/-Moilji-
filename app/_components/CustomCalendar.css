@@ -39,10 +39,17 @@
 }
 
 .react-calendar__tile {
-  padding: 0.3125rem 0rem 1.125rem;
+  padding: 0.4rem 0rem 1rem;
   position: relative;
 }
 
 .not-current-month {
   color: rgba(175, 175, 175, 0.664) !important;
+}
+
+.highlight-today {
+  background-color: #000000;
+  border-radius: 20%;
+  color: white;
+  height: 2.0625rem;
 }
