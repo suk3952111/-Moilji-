@@ -47,9 +47,23 @@
   color: rgba(175, 175, 175, 0.664) !important;
 }
 
+/* 오늘 날짜 표시 */
 .highlight-today {
   background-color: #000000;
   border-radius: 20%;
   color: white;
   height: 2.0625rem;
+}
+
+/* 선택된 날짜 표시 */
+.selected-date {
+  background-color: #ffa443;
+  border-radius: 20%;
+  color: white;
+  height: 2.0625rem;
+}
+
+/* 네비게이션 라벨 클릭 방지 */
+.react-calendar__navigation__label {
+  pointer-events: none;
 }
