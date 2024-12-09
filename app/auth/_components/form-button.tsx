@@ -3,12 +3,12 @@
 import { useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 
-export const FormButton = () => {
+export const FormButton = ({ children }: { children: React.ReactNode }) => {
   const { pending } = useFormStatus();
 
   return (
     <Button type='submit' disabled={pending}>
-      회원가입
+      {children}
     </Button>
   );
 };
