@@ -2,18 +2,18 @@
 
 import { useFormState } from 'react-dom';
 import { userSignup } from '../_lib/signup';
-import { FormButton } from './form-button';
-import { FormInput } from './form-input';
+import { SignupFormInput } from './signup-form-input';
+import { FormButton } from '@/app/auth/_components/form-button';
 
-export const Form = () => {
+export const SignupForm = () => {
   const initialState = { message: '', errors: {} };
   const [state, dispatch] = useFormState(userSignup, initialState);
   return (
     <form action={dispatch}>
       <div className='flex flex-col space-y-2'>
-        <FormInput errors={state?.errors} />
+        <SignupFormInput errors={state?.errors} />
       </div>
-      <FormButton />
+      <FormButton>회원가입</FormButton>
       {state?.message}
     </form>
   );

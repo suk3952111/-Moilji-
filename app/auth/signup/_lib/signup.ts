@@ -1,6 +1,6 @@
 'use server';
 
-import { validateSignupData } from './validation';
+import { validateSignupData } from './signup-validation';
 import { fetchAPI } from '@/lib/fetchAPI';
 import { redirect } from 'next/navigation';
 
@@ -20,7 +20,7 @@ export async function userSignup(prevState: State, formData: FormData) {
   if (!validationResult.success) {
     return {
       errors: validationResult.errors,
-      message: 'Validation failed',
+      message: '다시 시도해 주세요.',
     };
   }
 
@@ -35,12 +35,6 @@ export async function userSignup(prevState: State, formData: FormData) {
     };
   }
 
-  // const response = await fetch('http://54.180.31.176/api/auths/signUp', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({ userName, email, password }),
-  // });
-
   const response = await fetchAPI('/api/auths/signUp', 'POST', {
     userName,
     email,
@@ -48,10 +42,8 @@ export async function userSignup(prevState: State, formData: FormData) {
   });
 
   //Api 아직 완성이 안됬습니다!
-  if (response.status === 500) {
-    const responseData = await response.json();
-
-    if (responseData.message === 'Duplicate email') {
+  if (response.success!) {
+    if (response.message === 'Duplicate email') {
       return {
         errors: {
           email: ['이메일이 이미 존재합니다.'],
@@ -61,14 +53,9 @@ export async function userSignup(prevState: State, formData: FormData) {
     }
 
     return {
-      message: '회원가입 실패1',
+      message: `회원가입 실패 ${response.message} `,
     };
   }
 
-  if (!response.ok) {
-    return {
-      message: '회원가입 실패2',
-    };
-  }
   redirect('/auth/login');
 }
