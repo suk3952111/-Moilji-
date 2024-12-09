@@ -1,16 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Calendar from 'react-calendar';
-import ImgCustomLoader from '../utils/ImgCustomLoader';
 import CircularProgress from './CirclueProgressBar';
 import './CustomCalendar.css';
 import { Button } from '@/components/ui/button';
-import avatarImg from '@/public/avatar.png';
-import heartImg from '@/public/heart.png';
-import moreAvatarImg from '@/public/more-avatar.png';
-import usersImg from '@/public/users.png';
 import { format } from 'date-fns';
+import { Ellipsis, Heart, User, Users } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -19,8 +15,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 export default function MainPageHeader() {
   // 북마크 상태 토글 - 아직 정상작동 x
   const [isBookmarked, setIsBookmarked] = useState(false);
+
   // 로그인 상태
   const [isLogin, setIsLogin] = useState(false);
+
   // 오늘 날짜 할당
   const today = new Date();
 
@@ -49,25 +47,23 @@ export default function MainPageHeader() {
                     <p className='text-sm text-gray-600 mt-6'>12월 04일 시작</p>
                     <div className='flex flex-col items-start gap-2 mt-20'>
                       <div className='flex flex-row gap-2 items-center'>
-                        <ImgCustomLoader
-                          src={usersImg}
-                          alt='user-img'
-                          width='0.9375rem'
-                          height='0.9375rem'
-                        />
+                        <Users className='w-[17px] h-[17px]' />
                         <span className='text-sm'>21명 / 50명</span>
                       </div>
 
                       <div className='flex flex-row'>
                         {[1, 2, 3, 4, 5, 6].slice(0, 4).map((_, idx) => (
-                          <ImgCustomLoader
-                            key={idx}
-                            src={idx < 3 ? avatarImg : moreAvatarImg}
-                            alt='avatar-img'
-                            width='2.5rem'
-                            height='2.5rem'
-                            className='-mr-4'
-                          />
+                          <React.Fragment key={idx}>
+                            {idx < 3 ? (
+                              <div className='w-[2rem] h-[2rem] border-[0.925px] border-[#D1D5DB] bg-white rounded-full -mr-3 flex justify-center items-center'>
+                                <User />
+                              </div>
+                            ) : (
+                              <div className='w-[2rem] h-[2rem] border-[0.925px] border-[#D1D5DB] bg-[#D1D5DB] rounded-full -mr-3 flex justify-center items-center'>
+                                <Ellipsis className='w-[1.5rem] h-[1.5rem]' />
+                              </div>
+                            )}
+                          </React.Fragment>
                         ))}
                       </div>
                     </div>
@@ -79,20 +75,10 @@ export default function MainPageHeader() {
                         className='text-lg'
                       >
                         {isBookmarked ? (
-                          <ImgCustomLoader
-                            src={heartImg}
-                            alt='heart-img'
-                            width='40'
-                            height='40'
-                          />
+                          // 찜 기능 API 구현되면 연결예정
+                          <Heart />
                         ) : (
-                          <ImgCustomLoader
-                            src={heartImg}
-                            alt='heart-img'
-                            width='40'
-                            height='40'
-                            className='bg-blue-300'
-                          />
+                          <Heart className='bg-red-300' />
                         )}
                       </button>
                     </div>
@@ -110,7 +96,7 @@ export default function MainPageHeader() {
         <div className='bg-gray-300 w-[28rem] h-[5.375rem] px-[1.875rem] flex flex-row justify-between items-center'>
           {isLogin ? (
             <>
-              {/* 독서 진행률, 서적 이름, 상세페이지 주소등을 api가 준비되면 연결해서 완성하기 */}
+              {/* 독서 진행률, 서적 이름, 상세페이지 주소등을 api가 준비되면 연결할 예정 */}
               <div className='flex flex-row gap-10 items-center'>
                 <CircularProgress value={50} max={100} />
                 <div>
@@ -144,7 +130,7 @@ export default function MainPageHeader() {
         </div>
         <Calendar
           locale='en-GB'
-          formatShortWeekday={(locale, date) => format(date, 'EEE')}
+          formatShortWeekday={(_, date) => format(date, 'EEE')}
           formatMonthYear={(locale, date) =>
             date.toLocaleString(locale, { month: 'short', year: 'numeric' })
           }
