@@ -11,6 +11,8 @@ interface customDropdownProps {
   trigger?: string;
   label?: string;
   items?: string[];
+  children?: React.ReactNode;
+  onSelect?: (value: string) => void;
   dropdownClassName?: string[];
   triggerClassName?: string[];
   labelClassName?: string[];
@@ -19,8 +21,10 @@ interface customDropdownProps {
 
 export default function CustomDropdown({
   trigger = 'title',
-  label = 'menu-label',
+  label,
   items = ['item1', 'item2', 'item3'],
+  children,
+  onSelect,
   dropdownClassName,
   triggerClassName,
   labelClassName,
@@ -33,15 +37,23 @@ export default function CustomDropdown({
           {trigger}
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel className={`${labelClassName}`}>
-            {label}
-          </DropdownMenuLabel>
+          {label && (
+            <DropdownMenuLabel className={`${labelClassName}`}>
+              {label}
+            </DropdownMenuLabel>
+          )}
           <DropdownMenuSeparator />
-          {items.map((item, idx) => (
-            <DropdownMenuItem key={idx} className={`${itemClassName}`}>
-              {item}
-            </DropdownMenuItem>
-          ))}
+          {children
+            ? children
+            : items.map((item, idx) => (
+                <DropdownMenuItem
+                  key={idx}
+                  className={`${itemClassName?.join(' ')}`}
+                  onClick={() => onSelect && onSelect(item)}
+                >
+                  {item}
+                </DropdownMenuItem>
+              ))}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
