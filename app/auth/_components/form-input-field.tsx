@@ -6,7 +6,7 @@ interface FormInputFieldProps {
   name: string;
   type: string;
   placeholder: string;
-  errors: string[] | undefined;
+  errors?: string[];
   disabled: boolean;
 }
 
