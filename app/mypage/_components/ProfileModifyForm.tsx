@@ -10,8 +10,8 @@ import Image from 'next/image';
 type Props = { user: User; setUser: (user: User) => void };
 
 export default function ProfileModifyForm({ user, setUser }: Props) {
-  const [nickname, setNickname] = useState(user?.companyName);
-  const [image, setImage] = useState(user?.image);
+  const [nickname, setNickname] = useState(user?.userName);
+  const [image, setImage] = useState(user?.profile);
   const [file, setFile] = useState<File>();
   const [errors, setErrors] = useState<Record<string, string>>();
   const { closeModal } = useModalStore();
@@ -41,13 +41,13 @@ export default function ProfileModifyForm({ user, setUser }: Props) {
     setErrors({});
     const formData = new FormData();
     // 프로필 수정 임시 api여서 회사명으로 추가
-    formData.append('companyName', nickname);
+    formData.append('userName', nickname);
     if (file) {
-      formData.append('image', file as File);
+      formData.append('profile', file as File);
     }
     try {
-      const updated = await updateUser(formData);
-      setUser(updated);
+      const { user } = await updateUser(formData);
+      setUser(user);
     } catch (error) {
       console.error(error);
     }
