@@ -1,5 +1,5 @@
 ### 모읽지 (Moilji) 프로젝트 README
-
+![마이페이지 _ 나의 모임 _ 참여 중인 모임](https://github.com/user-attachments/assets/d9556377-24df-4631-af0e-8750d0c05492)
 ```markdown
 # 모읽지 (Moilji)
 
