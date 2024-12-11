@@ -2,12 +2,12 @@
 
 import { setCookie } from '../../_utils/cookie';
 import { validateLoginData } from './login-validation';
-import { fetchAPI } from '@/lib/fetchAPI';
+import { fetchAPIServer } from '@/lib/fetchAPI.server';
 import { redirect } from 'next/navigation';
 
 export type State = {
   error?: {
-    userName?: string[];
+    email?: string[];
     password?: string[];
   };
   message: string | null;
@@ -23,19 +23,29 @@ export async function userLogIn(prevState: State, formData: FormData) {
     };
   }
 
-  const { userName, password } = validationResult.data!;
+  const { email, password } = validationResult.data!;
 
-  const response = await fetchAPI('/api/auths/signIn', 'POST', {
-    userName,
+  const response = await fetchAPIServer('/api/auths/signIn', 'POST', {
+    email,
     password,
   });
 
-  // console.log(response);
-
-  if (!response.success) {
-    return {
-      message: `로그인 실패 ${response.message}`,
-    };
+  console.log('test:', response);
+  if (response.status !== 200) {
+    try {
+      const errorMessage = response.error?.message || '{}';
+      const parsedError = JSON.parse(errorMessage);
+      const detailedMessage =
+        parsedError.message || '알 수 없는 오류가 발생했습니다.';
+      return {
+        message: `로그인 실패: ${detailedMessage}`,
+      };
+    } catch (e) {
+      console.error('JSON 파싱 오류:', e);
+      return {
+        message: '로그인 실패: 알 수 없는 오류가 발생했습니다.',
+      };
+    }
   } else {
     setCookie('token', response.result.token, {
       httpOnly: false,

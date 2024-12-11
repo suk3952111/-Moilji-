@@ -1,4 +1,3 @@
-// EyeIcon.tsx
 import React, { SVGProps } from 'react';
 
 const EyeIcon: React.FC<SVGProps<SVGSVGElement>> = (props) => {

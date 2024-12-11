@@ -8,6 +8,7 @@ interface FormInputFieldProps {
   placeholder: string;
   errors?: string[];
   disabled: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const FormInputField = ({
@@ -17,6 +18,7 @@ export const FormInputField = ({
   placeholder,
   errors,
   disabled,
+  onChange,
 }: FormInputFieldProps) => (
   <div>
     <Input
@@ -26,6 +28,7 @@ export const FormInputField = ({
       required
       placeholder={placeholder}
       disabled={disabled}
+      onChange={onChange}
     />
     {errors && (
       <div>
