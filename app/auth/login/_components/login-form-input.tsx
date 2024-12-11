@@ -22,11 +22,11 @@ export const LoginFormInput = ({ errors }: FormInputProps) => {
   return (
     <div>
       <FormInputField
-        id='userName'
-        name='userName'
+        id='email'
+        name='email'
         type='text'
-        placeholder='이름을 입력하세요'
-        errors={errors?.userName}
+        placeholder='이메일을 입력하세요'
+        errors={errors?.email}
         disabled={pending}
       />
       <FormInputField
