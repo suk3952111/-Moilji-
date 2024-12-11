@@ -3,17 +3,28 @@
 import React, { useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import EyeIcon from '../../_svg/EyeIcon';
+import { CheckDuplicateButton } from './signup-form-duplicateCheckButton';
 import { FormInputField } from '@/app/auth/_components/form-input-field';
 
-interface FormInputProps {
+interface SignupFormInputProps {
   errors?: {
-    [key: string]: string[];
+    [key: string]: string[]; // string[] 타입으로 정의
   };
+  setIsEmailValid: (isValid: boolean) => void;
+  setIsUserNameValid: (isValid: boolean) => void;
 }
 
-export const SignupFormInput = ({ errors }: FormInputProps) => {
+export const SignupFormInput = ({
+  errors,
+  setIsEmailValid,
+  setIsUserNameValid,
+}: SignupFormInputProps) => {
   const { pending } = useFormStatus();
   const [showPassword, setShowPassword] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [userNameError, setUserNameError] = useState<string[]>([]); // string[]로 초기화
+  const [emailError, setEmailError] = useState<string[]>([]); // string[]로 초기화
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -21,22 +32,42 @@ export const SignupFormInput = ({ errors }: FormInputProps) => {
 
   return (
     <div>
-      <FormInputField
-        id='userName'
-        name='userName'
-        type='text'
-        placeholder='이름을 입력하세요'
-        errors={errors?.userName}
-        disabled={pending}
-      />
-      <FormInputField
-        id='email'
-        name='email'
-        type='email'
-        placeholder='이메일을 입력하세요'
-        errors={errors?.email}
-        disabled={pending}
-      />
+      <div className='flex items-center space-x-2'>
+        <FormInputField
+          id='userName'
+          name='userName'
+          type='text'
+          placeholder='이름을 입력하세요'
+          disabled={pending}
+          errors={errors?.userName || userNameError}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+        <CheckDuplicateButton
+          type='useName'
+          value={userName}
+          setError={setUserNameError} // string[] 상태 업데이트
+          onSuccess={() => setIsUserNameValid(true)}
+          onFailure={() => setIsUserNameValid(false)}
+        />
+      </div>
+      <div className='flex items-center space-x-2'>
+        <FormInputField
+          id='email'
+          name='email'
+          type='email'
+          placeholder='이메일을 입력하세요'
+          errors={errors?.email || emailError}
+          disabled={pending}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <CheckDuplicateButton
+          type='email'
+          value={email}
+          setError={setEmailError} // string[] 상태 업데이트
+          onSuccess={() => setIsEmailValid(true)}
+          onFailure={() => setIsEmailValid(false)}
+        />
+      </div>
       <FormInputField
         id='password'
         name='password'

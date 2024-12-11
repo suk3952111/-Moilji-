@@ -2,7 +2,7 @@
 
 import { setCookie } from '../../_utils/cookie';
 import { validateLoginData } from './login-validation';
-import { fetchAPI } from '@/lib/fetchAPI';
+import { fetchAPIServer } from '@/lib/fetchAPI.server';
 import { redirect } from 'next/navigation';
 
 export type State = {
@@ -25,7 +25,7 @@ export async function userLogIn(prevState: State, formData: FormData) {
 
   const { userName, password } = validationResult.data!;
 
-  const response = await fetchAPI('/api/auths/signIn', 'POST', {
+  const response = await fetchAPIServer('/api/auths/signIn', 'POST', {
     userName,
     password,
   });

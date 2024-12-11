@@ -1,7 +1,7 @@
 'use server';
 
 import { validateSignupData } from './signup-validation';
-import { fetchAPI } from '@/lib/fetchAPI';
+import { fetchAPIServer } from '@/lib/fetchAPI.server';
 import { redirect } from 'next/navigation';
 
 export type State = {
@@ -35,7 +35,7 @@ export async function userSignup(prevState: State, formData: FormData) {
     };
   }
 
-  const response = await fetchAPI('/api/auths/signUp', 'POST', {
+  const response = await fetchAPIServer('/api/auths/signUp', 'POST', {
     userName,
     email,
     password,
