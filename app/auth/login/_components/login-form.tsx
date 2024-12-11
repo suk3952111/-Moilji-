@@ -13,7 +13,7 @@ export const LoginForm = () => {
       <div className='flex flex-col space-y-2'>
         <LoginFormInput errors={state?.errors} />
       </div>
-      <FormButton>로그인</FormButton>
+      <FormButton disabled={false}>로그인</FormButton>
       {state?.message}
     </form>
   );

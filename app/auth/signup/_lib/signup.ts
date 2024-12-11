@@ -1,7 +1,7 @@
 'use server';
 
 import { validateSignupData } from './signup-validation';
-import { fetchAPI } from '@/lib/fetchAPI';
+import { fetchAPIServer } from '@/lib/fetchAPI.server';
 import { redirect } from 'next/navigation';
 
 export type State = {
@@ -24,25 +24,15 @@ export async function userSignup(prevState: State, formData: FormData) {
     };
   }
 
-  const { userName, email, password, confirmPassword } = validationResult.data!;
+  const { userName, email, password } = validationResult.data!;
 
-  if (password !== confirmPassword) {
-    return {
-      errors: {
-        confirmPassword: ['비밀번호가 일치하지 않습니다.'],
-      },
-      message: 'Password mismatch',
-    };
-  }
-
-  const response = await fetchAPI('/api/auths/signUp', 'POST', {
+  const response = await fetchAPIServer('/api/auths/signUp', 'POST', {
     userName,
     email,
     password,
   });
 
-  //Api 아직 완성이 안됬습니다!
-  if (response.success!) {
+  if (!response.success) {
     if (response.message === 'Duplicate email') {
       return {
         errors: {
@@ -53,7 +43,7 @@ export async function userSignup(prevState: State, formData: FormData) {
     }
 
     return {
-      message: `회원가입 실패 ${response.message} `,
+      message: `회원가입 실패: ${response.message}`,
     };
   }
 
