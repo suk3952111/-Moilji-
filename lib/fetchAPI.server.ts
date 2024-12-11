@@ -1,6 +1,6 @@
 import { cookies as serverCookies } from 'next/headers';
 
-// const BASE_URL = process.env.NEXT_PUBLIC_DOMAIN || 'http://54.180.31.176:80';
+const BASE_URL = process.env.NEXT_PUBLIC_DOMAIN || 'http://54.180.31.176';
 
 // 서버 환경에서 토큰 가져오기
 function getToken(): string | undefined {
@@ -31,19 +31,19 @@ export async function fetchAPIServer(
   };
 
   try {
-    const response = await fetch(`http://54.180.31.176:80${endpoint}`, options);
+    const response = await fetch(`${BASE_URL}${endpoint}`, options);
 
     if (!response.ok) {
       const error = {
         status: response.status,
         message: (await response.text()) || 'Network response was not ok',
       };
-      throw error;
+      return { error };
     }
 
     return response.status !== 204 ? await response.json() : null;
   } catch (error) {
     console.error('API 호출 에러 (서버):', error);
-    throw error;
+    return { error };
   }
 }

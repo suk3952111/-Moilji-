@@ -1,8 +1,7 @@
 import Cookies from 'js-cookie';
 
-const BASE_URL = process.env.NEXT_PUBLIC_DOMAIN || 'http://54.180.31.176:80';
+const BASE_URL = process.env.NEXT_PUBLIC_DOMAIN || '//54.180.31.176';
 
-// 클라이언트 환경에서 토큰 가져오기
 function getToken(): string | undefined {
   return Cookies.get('token');
 }
@@ -30,31 +29,24 @@ export async function fetchAPIClient(
   };
 
   const url = `${BASE_URL}${endpoint}`;
-  console.log('Request URL:', url);
-  console.log('Request Options:', options);
 
   try {
-    // const response = await fetch(url, options);
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: options.headers,
-    });
+    const response = await fetch(url, options);
 
-    console.log('Response:', response);
-    // if (!response.ok) {
-    //   const errorBody = await response.text();
-    //   console.error('Error Body:', errorBody);
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error('Error Body:', errorBody);
 
-    //   const error = {
-    //     status: response.status,
-    //     message: errorBody || 'Network response was not ok',
-    //   };
-    //   throw error;
-    // }
+      const error = {
+        status: response.status,
+        message: errorBody || 'Network response was not ok',
+      };
+      return { error };
+    }
 
     return response.status !== 204 ? await response.json() : null;
   } catch (error) {
     console.error('API 호출 에러 (클라이언트):', error);
-    throw error;
+    return { error };
   }
 }
