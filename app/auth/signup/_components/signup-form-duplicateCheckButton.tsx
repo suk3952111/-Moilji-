@@ -5,9 +5,9 @@ import { checkDuplicate } from '../_lib/duplicate-check';
 import { Button } from '@/components/ui/button';
 
 interface CheckDuplicateButtonProps {
-  type: 'email' | 'useName';
+  type: 'email' | 'userName';
   value: string;
-  setError: (message: string[]) => void; // string[] 타입으로 수정
+  setError: (message: string[]) => void;
   onSuccess: () => void;
   onFailure: () => void;
 }
@@ -20,11 +20,11 @@ export const CheckDuplicateButton = ({
   onFailure,
 }: CheckDuplicateButtonProps) => {
   const [statusMessage, setStatusMessage] = useState('');
-  const [messageColor, setMessageColor] = useState(''); // 메시지 색상 상태 관리
+  const [messageColor, setMessageColor] = useState('');
 
   const handleCheck = async () => {
     if (!value) {
-      setError(['값을 입력해주세요.']); // string[]로 전달
+      setError(['값을 입력해주세요.']);
       setStatusMessage('');
       setMessageColor('');
       onFailure();
@@ -34,14 +34,14 @@ export const CheckDuplicateButton = ({
     const result = await checkDuplicate(type, value);
 
     if (result.isDuplicate) {
-      setError([result.message]); // string[]로 전달
+      setError([result.message]);
       setStatusMessage(result.message);
-      setMessageColor('text-red-500'); // 중복 메시지는 빨간색
+      setMessageColor('text-red-500');
       onFailure();
     } else {
-      setError([]); // 에러를 초기화
+      setError([]);
       setStatusMessage(result.message);
-      setMessageColor('text-green-500'); // 성공 메시지는 초록색
+      setMessageColor('text-green-500');
       onSuccess();
     }
   };

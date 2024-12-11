@@ -8,7 +8,7 @@ import { FormInputField } from '@/app/auth/_components/form-input-field';
 
 interface SignupFormInputProps {
   errors?: {
-    [key: string]: string[]; // string[] 타입으로 정의
+    [key: string]: string[];
   };
   setIsEmailValid: (isValid: boolean) => void;
   setIsUserNameValid: (isValid: boolean) => void;
@@ -23,8 +23,8 @@ export const SignupFormInput = ({
   const [showPassword, setShowPassword] = useState(false);
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
-  const [userNameError, setUserNameError] = useState<string[]>([]); // string[]로 초기화
-  const [emailError, setEmailError] = useState<string[]>([]); // string[]로 초기화
+  const [userNameError, setUserNameError] = useState<string[]>([]);
+  const [emailError, setEmailError] = useState<string[]>([]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -43,9 +43,9 @@ export const SignupFormInput = ({
           onChange={(e) => setUserName(e.target.value)}
         />
         <CheckDuplicateButton
-          type='useName'
+          type='userName'
           value={userName}
-          setError={setUserNameError} // string[] 상태 업데이트
+          setError={setUserNameError}
           onSuccess={() => setIsUserNameValid(true)}
           onFailure={() => setIsUserNameValid(false)}
         />
@@ -63,7 +63,7 @@ export const SignupFormInput = ({
         <CheckDuplicateButton
           type='email'
           value={email}
-          setError={setEmailError} // string[] 상태 업데이트
+          setError={setEmailError}
           onSuccess={() => setIsEmailValid(true)}
           onFailure={() => setIsEmailValid(false)}
         />

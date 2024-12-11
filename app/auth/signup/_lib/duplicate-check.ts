@@ -1,7 +1,7 @@
 import { fetchAPIClient } from '@/lib/fetchAPI.client';
 
 export const checkDuplicate = async (
-  type: 'email' | 'useName',
+  type: 'email' | 'userName',
   value: string,
 ) => {
   try {
