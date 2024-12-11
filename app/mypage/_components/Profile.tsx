@@ -21,14 +21,14 @@ export default function Profile() {
   }, []);
 
   if (!user) return <p>Loading...</p>;
-  const { email, companyName, image } = user;
+  const { userName, email, profile } = user;
 
   return (
     <div className='w-[700px] h-[372px] bg-[#D9D9D9] bg-opacity-30 px-[22px] py-9 mb-8'>
       <div className='flex items-center gap-6 mb-6'>
-        {image ? (
+        {profile ? (
           <Image
-            src={image as string}
+            src={profile as string}
             className='rounded-full'
             width='84'
             height='84'
@@ -38,7 +38,7 @@ export default function Profile() {
           <ImageIcon />
         )}
         <div className='flex flex-col w-44'>
-          <p className='font-bold text-2xl'>{companyName}</p>
+          <p className='font-bold text-2xl'>{userName}</p>
           <p>{email}</p>
         </div>
         <button

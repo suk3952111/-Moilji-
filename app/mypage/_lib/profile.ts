@@ -1,46 +1,33 @@
 export type User = {
-  teamId: string;
-  id: number;
+  userId: number;
+  userName: string;
   email: string;
-  name: string;
-  companyName: string;
-  image: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  profile: string;
 };
 
-// 임시 api로부터 받은 토큰 입력하세요
-const token = '';
-
-export const getUser = async (): Promise<User> => {
-  const res = await fetch(
-    'https://fe-adv-project-together-dallaem.vercel.app/aa/auths/user',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+const token = 'token';
+export const getUser = async () => {
+  const res = await fetch('http://localhost:9090/api/profile', {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   if (!res.ok) {
-    throw new Error('Failed to fetch user info');
+    throw new Error('failed fetch user data');
   }
   return res.json();
 };
 
-export const updateUser = async (formData: FormData): Promise<User> => {
-  const res = await fetch(
-    'https://fe-adv-project-together-dallaem.vercel.app/aa/auths/user',
-    {
-      method: 'PUT',
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+export const updateUser = async (formData: FormData) => {
+  const res = await fetch('http://localhost:9090/api/auths/edit/user', {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+    body: formData,
+  });
   if (!res.ok) {
-    throw new Error('Failed to fetch user info');
+    throw new Error('Failed to update user data');
   }
   return res.json();
 };
